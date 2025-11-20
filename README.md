@@ -29,15 +29,16 @@ Supports full CRUD (add/edit/delete/complete), drag-and-drop reordering, task ca
 
 ## Project Structure  
 /responsive-todo-app
-├── index.html
-├── styles.css
-├── app.js
-├── README.md
-└── tests/
-└── taskLogic.test.js
+- ├── index.html
+- ├── styles.css
+- ├── app.js
+- ├── README.md
+- └── tests/
+- └── taskLogic.test.js
 
 ## Setup & Running  
 1. Clone the repository:  
    ```bash
    git clone https://github.com/yourusername/responsive-todo-app.git
    cd responsive-todo-app
+
