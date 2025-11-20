@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Todo App</title>
+  <title>miToDo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -11,12 +11,12 @@
     <header class="app-header">
       <div>
         <p class="eyebrow">Personal Organizer</p>
-        <h1>Todo App</h1>
+        <h1>miToDo</h1>
         <p class="subtitle">Capture tasks, organize by priority, and glide through your day.</p>
       </div>
       <button id="theme-toggle" class="theme-toggle" aria-label="Toggle color theme">
-        <span class="theme-toggle__icon">🌞</span>
-        <span class="theme-toggle__label">Toggle Theme</span>
+        <span class="theme-toggle__icon">🌙</span>
+        <span class="theme-toggle__label">Toggle Dark Mode</span>
       </button>
     </header>
     <main>
@@ -24,7 +24,7 @@
         <section>
           <h2>Search & Filter</h2>
           <label>Keyword
-            <input type="text" id="filter-keyword" placeholder="Search tasks…">
+            <input type="text" id="filter-keyword" placeholder="Search tasks...">
           </label>
           <label>Status
             <select id="filter-status">
@@ -47,7 +47,7 @@
       </div>
       <div class="task-list-container">
         <form id="new-task-form" class="new-task-form">
-          <input type="text" id="new-task-title" placeholder="New task title…" required>
+          <input type="text" id="new-task-title" placeholder="New task title..." required>
           <select id="new-task-priority" required>
             <option value="low">Low Priority</option>
             <option value="medium">Medium Priority</option>
@@ -60,6 +60,43 @@
         <ul id="task-list" class="task-list"></ul>
       </div>
     </main>
+  </div>
+  <div id="dialog-overlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <header class="modal-header">
+        <h3 id="modal-title">Edit Task</h3>
+        <button type="button" class="icon-button" id="modal-close" aria-label="Close dialog">×</button>
+      </header>
+      <form id="edit-task-form" class="modal-body">
+        <label>Title
+          <input type="text" id="edit-title" required>
+        </label>
+        <label>Category
+          <input type="text" id="edit-category">
+        </label>
+        <label>Due Date
+          <input type="date" id="edit-due" required>
+        </label>
+        <label>Priority
+          <select id="edit-priority" required>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </label>
+        <div class="modal-actions">
+          <button type="button" class="ghost-button" id="edit-cancel">Cancel</button>
+          <button type="submit" class="primary-button">Save Changes</button>
+        </div>
+      </form>
+      <div id="delete-confirmation" class="modal-body hidden">
+        <p id="delete-message" class="delete-message"></p>
+        <div class="modal-actions">
+          <button type="button" class="ghost-button" id="delete-cancel">Cancel</button>
+          <button type="button" class="danger-button" id="delete-confirm">Delete</button>
+        </div>
+      </div>
+    </div>
   </div>
   <script src="app.js"></script>
 </body>

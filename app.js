@@ -37,6 +37,7 @@ function reorderTasks(tasks = [], fromIndex, toIndex) {
 if (typeof document !== 'undefined') {
   (() => {
     let tasks = [];
+    let activeTaskIndex = null;
 
     const taskListEl        = document.getElementById('task-list');
     const newTaskForm       = document.getElementById('new-task-form');
@@ -47,6 +48,19 @@ if (typeof document !== 'undefined') {
     const filterDateFromEl  = document.getElementById('filter-date-from');
     const filterDateToEl    = document.getElementById('filter-date-to');
     const filterResetBtn    = document.getElementById('filter-reset');
+    const dialogOverlay     = document.getElementById('dialog-overlay');
+    const modalCloseBtn     = document.getElementById('modal-close');
+    const editTaskForm      = document.getElementById('edit-task-form');
+    const editTitleInput    = document.getElementById('edit-title');
+    const editCategoryInput = document.getElementById('edit-category');
+    const editDueInput      = document.getElementById('edit-due');
+    const editPriorityInput = document.getElementById('edit-priority');
+    const editCancelBtn     = document.getElementById('edit-cancel');
+    const dialogTitle       = document.getElementById('modal-title');
+    const deleteConfirmation = document.getElementById('delete-confirmation');
+    const deleteMessage     = document.getElementById('delete-message');
+    const deleteConfirmBtn  = document.getElementById('delete-confirm');
+    const deleteCancelBtn   = document.getElementById('delete-cancel');
 
     function loadTasks() {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -55,6 +69,42 @@ if (typeof document !== 'undefined') {
 
     function saveTasks() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    }
+
+    function closeDialog() {
+      dialogOverlay.classList.add('hidden');
+      dialogOverlay.setAttribute('aria-hidden', 'true');
+      activeTaskIndex = null;
+      editTaskForm.reset();
+    }
+
+    function openEditDialog(index) {
+      activeTaskIndex = index;
+      const task = tasks[index];
+      if (!task) return;
+      dialogTitle.textContent = 'Edit Task';
+      editTaskForm.classList.remove('hidden');
+      deleteConfirmation.classList.add('hidden');
+      editTitleInput.value    = task.title || '';
+      editCategoryInput.value = task.category || '';
+      editDueInput.value      = task.dueDate || '';
+      editPriorityInput.value = task.priority || 'medium';
+      dialogOverlay.classList.remove('hidden');
+      dialogOverlay.setAttribute('aria-hidden', 'false');
+      setTimeout(() => editTitleInput.focus(), 0);
+    }
+
+    function openDeleteDialog(index) {
+      activeTaskIndex = index;
+      const task = tasks[index];
+      if (!task) return;
+      dialogTitle.textContent = 'Delete Task';
+      editTaskForm.classList.add('hidden');
+      deleteConfirmation.classList.remove('hidden');
+      deleteMessage.textContent = `Delete "${task.title}"?`;
+      dialogOverlay.classList.remove('hidden');
+      dialogOverlay.setAttribute('aria-hidden', 'false');
+      deleteConfirmBtn.focus();
     }
 
     function renderTasks() {
@@ -112,33 +162,14 @@ if (typeof document !== 'undefined') {
         actionsDiv.className = 'actions';
 
         const editBtn = document.createElement('button');
-        editBtn.textContent = '✏️';
+        editBtn.textContent = 'Edit';
         editBtn.title = 'Edit';
-        editBtn.addEventListener('click', () => {
-          const newTitle    = prompt('Edit task title:', task.title);
-          if (newTitle !== null && newTitle.trim()) task.title = newTitle.trim();
-          const newCategory = prompt('Edit category:', task.category);
-          if (newCategory !== null) task.category = newCategory.trim();
-          const newDue      = prompt('Edit due date (YYYY-MM-DD):', task.dueDate);
-          if (newDue !== null && /^\d{4}\-\d{2}\-\d{2}$/.test(newDue)) task.dueDate = newDue;
-          const newPriority = prompt('Edit priority (low / medium / high):', task.priority);
-          if (newPriority !== null && ['low','medium','high'].includes(newPriority.trim().toLowerCase())) {
-            task.priority = newPriority.trim().toLowerCase();
-          }
-          saveTasks();
-          renderTasks();
-        });
+        editBtn.addEventListener('click', () => openEditDialog(index));
 
         const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = '🗑️';
+        deleteBtn.textContent = 'Delete';
         deleteBtn.title = 'Delete';
-        deleteBtn.addEventListener('click', () => {
-          if (confirm('Delete this task?')) {
-            tasks.splice(index, 1);
-            saveTasks();
-            renderTasks();
-          }
-        });
+        deleteBtn.addEventListener('click', () => openDeleteDialog(index));
 
         actionsDiv.append(editBtn, deleteBtn);
 
@@ -219,6 +250,48 @@ if (typeof document !== 'undefined') {
       }
     });
 
+    // Edit and delete dialog events
+    editTaskForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (activeTaskIndex === null) return;
+      const task = tasks[activeTaskIndex];
+      if (!task) return;
+      const updatedTitle = editTitleInput.value.trim();
+      if (!updatedTitle) {
+        editTitleInput.focus();
+        return;
+      }
+      task.title = updatedTitle;
+      task.category = editCategoryInput.value.trim();
+      task.dueDate = editDueInput.value;
+      task.priority = editPriorityInput.value;
+      saveTasks();
+      renderTasks();
+      closeDialog();
+    });
+
+    deleteConfirmBtn.addEventListener('click', () => {
+      if (activeTaskIndex === null) return;
+      tasks.splice(activeTaskIndex, 1);
+      saveTasks();
+      renderTasks();
+      closeDialog();
+    });
+
+    [modalCloseBtn, editCancelBtn, deleteCancelBtn].forEach(btn => {
+      btn.addEventListener('click', closeDialog);
+    });
+
+    dialogOverlay.addEventListener('click', (e) => {
+      if (e.target === dialogOverlay) closeDialog();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !dialogOverlay.classList.contains('hidden')) {
+        closeDialog();
+      }
+    });
+
     // Filter events
     filterKeywordEl.addEventListener ('input',   renderTasks);
     filterStatusEl.addEventListener  ('change',  renderTasks);
@@ -236,6 +309,7 @@ if (typeof document !== 'undefined') {
 
     // Initialization
     loadTasks();
+    closeDialog();
     renderTasks();
 
     // Optional: you could set up a timer to periodically check for due-task reminders etc.
