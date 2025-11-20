@@ -61,43 +61,36 @@
       </div>
     </main>
   </div>
-  <div id="dialog-overlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <div class="modal-card">
-      <header class="modal-header">
-        <h3 id="modal-title">Edit Task</h3>
-        <button type="button" class="icon-button" id="modal-close" aria-label="Close dialog">×</button>
-      </header>
-      <form id="edit-task-form" class="modal-body">
-        <label>Title
-          <input type="text" id="edit-title" required>
-        </label>
-        <label>Category
-          <input type="text" id="edit-category">
-        </label>
-        <label>Due Date
-          <input type="date" id="edit-due" required>
-        </label>
-        <label>Priority
-          <select id="edit-priority" required>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
-        </label>
-        <div class="modal-actions">
-          <button type="button" class="ghost-button" id="edit-cancel">Cancel</button>
-          <button type="submit" class="primary-button">Save Changes</button>
-        </div>
-      </form>
-      <div id="delete-confirmation" class="modal-body hidden">
-        <p id="delete-message" class="delete-message"></p>
-        <div class="modal-actions">
-          <button type="button" class="ghost-button" id="delete-cancel">Cancel</button>
-          <button type="button" class="danger-button" id="delete-confirm">Delete</button>
-        </div>
+<div id="dialog-overlay" class="modal-overlay hidden" aria-modal="true" role="dialog" aria-labelledby="modal-title">
+  <div class="modal-card">
+    <header class="modal-header">
+      <h3 id="modal-title">Edit Task</h3>
+      <button type="button" class="icon-button" id="modal-close" aria-label="Close dialog">×</button>
+    </header>
+    <form id="edit-task-form" class="modal-body">
+      <label>Title <input type="text" id="edit-title" required></label>
+      <label>Category <input type="text" id="edit-category"></label>
+      <label>Due Date <input type="date" id="edit-due" required></label>
+      <label>Priority
+        <select id="edit-priority" required>
+          <option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option>
+        </select>
+      </label>
+      <div class="modal-actions">
+        <button type="button" class="ghost-button" id="edit-cancel">Cancel</button>
+        <button type="submit" class="primary-button">Save Changes</button>
+      </div>
+    </form>
+    <div id="delete-confirmation" class="modal-body hidden">
+      <p id="delete-message" class="delete-message"></p>
+      <div class="modal-actions">
+        <button type="button" class="ghost-button" id="delete-cancel">Cancel</button>
+        <button type="button" class="danger-button" id="delete-confirm">Delete</button>
       </div>
     </div>
   </div>
+</div>
+
   <script src="app.js"></script>
 </body>
 </html>
