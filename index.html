@@ -7,51 +7,60 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Todo App</h1>
-    <button id="theme-toggle">Toggle Theme</button>
-  </header>
-  <main>
-    <div class="sidebar">
-      <section>
-        <h2>Search & Filter</h2>
-        <label>Keyword
-          <input type="text" id="filter-keyword" placeholder="Search tasks…">
-        </label>
-        <label>Status
-          <select id="filter-status">
-            <option value="">Any</option>
-            <option value="pending">Pending</option>
-            <option value="completed">Completed</option>
+  <div class="page-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Personal Organizer</p>
+        <h1>Todo App</h1>
+        <p class="subtitle">Capture tasks, organize by priority, and glide through your day.</p>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle color theme">
+        <span class="theme-toggle__icon">🌞</span>
+        <span class="theme-toggle__label">Toggle Theme</span>
+      </button>
+    </header>
+    <main>
+      <div class="sidebar">
+        <section>
+          <h2>Search & Filter</h2>
+          <label>Keyword
+            <input type="text" id="filter-keyword" placeholder="Search tasks…">
+          </label>
+          <label>Status
+            <select id="filter-status">
+              <option value="">Any</option>
+              <option value="pending">Pending</option>
+              <option value="completed">Completed</option>
+            </select>
+          </label>
+          <label>Category
+            <input type="text" id="filter-category" placeholder="Category">
+          </label>
+          <label>Date From
+            <input type="date" id="filter-date-from">
+          </label>
+          <label>Date To
+            <input type="date" id="filter-date-to">
+          </label>
+          <button id="filter-reset" class="ghost-button">Reset Filters</button>
+        </section>
+      </div>
+      <div class="task-list-container">
+        <form id="new-task-form" class="new-task-form">
+          <input type="text" id="new-task-title" placeholder="New task title…" required>
+          <select id="new-task-priority" required>
+            <option value="low">Low Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="high">High Priority</option>
           </select>
-        </label>
-        <label>Category
-          <input type="text" id="filter-category" placeholder="Category">
-        </label>
-        <label>Date From
-          <input type="date" id="filter-date-from">
-        </label>
-        <label>Date To
-          <input type="date" id="filter-date-to">
-        </label>
-        <button id="filter-reset">Reset Filters</button>
-      </section>
-    </div>
-    <div class="task-list-container">
-      <form id="new-task-form" class="new-task-form">
-        <input type="text" id="new-task-title" placeholder="New task title…" required>
-        <select id="new-task-priority" required>
-          <option value="low">Low Priority</option>
-          <option value="medium">Medium Priority</option>
-          <option value="high">High Priority</option>
-        </select>
-        <input type="text" id="new-task-category" placeholder="Category">
-        <input type="date" id="new-task-duedate" required>
-        <button type="submit">Add Task</button>
-      </form>
-      <ul id="task-list" class="task-list"></ul>
-    </div>
-  </main>
+          <input type="text" id="new-task-category" placeholder="Category">
+          <input type="date" id="new-task-duedate" required>
+          <button type="submit">Add Task</button>
+        </form>
+        <ul id="task-list" class="task-list"></ul>
+      </div>
+    </main>
+  </div>
   <script src="app.js"></script>
 </body>
 </html>

@@ -1,0 +1,10 @@
+{
+  "name": "mi-todo-app",
+  "version": "1.0.0",
+  "description": "Responsive Todo App with filters and drag-and-drop",
+  "scripts": {
+    "test": "node tests/taskLogic.test.js"
+  },
+  "author": "",
+  "license": "MIT"
+}
